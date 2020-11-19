@@ -19,7 +19,6 @@ Start a dockcross image:
 
 ```sh
 # From juliet-test-suite-c
-$ cd ..
 $ PLATFORM="x64" # Set to x64, x86, armv7
 $ /usr/bin/dockcross-linux-$PLATFORM -a "-v $(pwd)/:/opt/juliet" bash
 
