@@ -21,19 +21,24 @@ You can also manually mount the built `bin` subdirectory on a CheriBSD host and 
 
 Install dockcross images:
 
-- `docker run --rm dockcross/linux-x86 > ./dockcross-linux-x86`
-- `docker run --rm dockcross/linux-x64 > ./dockcross-linux-x64`
-- `docker run --rm dockcross/linux-armv7 > ./dockcross-linux-armv7`
+- `docker run --rm dockcross/linux-x86 > /usr/bin/dockcross-linux-x86`
+- `docker run --rm dockcross/linux-x64 > /usr/bin/dockcross-linux-x64`
+- `docker run --rm dockcross/linux-armv7 > /usr/bin/dockcross-linux-armv7`
 
 Start a dockcross image:
 
 ```sh
-$ # From juliet-test-suite-c
+# From juliet-test-suite-c
 $ cd ..
-$ /path/to/dockcross-linux-x64 -a "-v $(pwd)/juliet-test-suite-c/:/opt/juliet" bash
+$ PLATFORM="x64" # Set to x64, x86, armv7
+$ /path/to/dockcross-linux-$PLATFORM -a "-v $(pwd)/:/opt/juliet" bash
+
+# Below this line is INSIDE the dockcross container
+$ CWES="121" # Set to the list of CWEs to build
+$ PLATFORM="x64" # Set to x64, x86, armv7
 $ python -m pip install pathlib
 $ cd /opt/juliet
-$ python juliet.py -b gcc -x g++ -c -k -o x64-output -g -m -r 121
+$ python juliet.py -b $CC -x $CXX -c -k -o $PLATFORM-output -g -m -r $CWES
 ```
 
-The output will be put right back into the juliet-test-suite-c directory.
+The output will be put right back into the juliet-test-suite-c directory on the host machine.
