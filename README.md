@@ -7,16 +7,6 @@ Testcases are organized by CWE in the `testcases` subdirectory. `juliet.py` is t
 To run executables after they are built, `juliet.py` invokes the `juliet-run.sh` script, which is copied to the `bin` subdirectory during the build. It records exit codes in `bin/CWEXXX/good.run` and `bin/CWEXXX/bad.run`. Executables are run with a timeout so that test cases depending on user input timeout with exit code 124.
 
 **Note:** Juliet C++ test cases that use namespace std and the bind() socket function didn't compile under c++11, which introduces std::bind(). This version of the test suite has replaced `bind()` calls in C++ source files with calls to `::bind()`.
-
-## Running tests on CheriBSD
-
-TODO
-
-To run the tests on CHERI you can use [cheribuild](https://github.com/CTSRD-CHERI/cheribuild):
-`cheribuild.py juliet-c-cheri --build-and-test` will build and run the tests (assuming you have built the SDK and a CheriBSD image first).
-
-You can also manually mount the built `bin` subdirectory on a CheriBSD host and use the `juliet-run.sh` script directly to run tests.
-
 # Cross Compiling
 
 Install dockcross images:
