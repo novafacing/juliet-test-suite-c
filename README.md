@@ -21,7 +21,7 @@ Start a dockcross image:
 # From juliet-test-suite-c
 $ cd ..
 $ PLATFORM="x64" # Set to x64, x86, armv7
-$ /path/to/dockcross-linux-$PLATFORM -a "-v $(pwd)/:/opt/juliet" bash
+$ /usr/bin/dockcross-linux-$PLATFORM -a "-v $(pwd)/:/opt/juliet" bash
 
 # Below this line is INSIDE the dockcross container
 $ CWES="121" # Set to the list of CWEs to build
