@@ -22,9 +22,9 @@ def clean(path):
         pass
 
 
-def generate(path, output_dir, keep_going):
+def generate(path, output_dir, keep_going, cc_path, cxx_path):
     shutil.copy(root_dir + "/CMakeLists.txt", path)
-    retcode = subprocess.Popen(["cmake", "-DOUTPUT_DIR:STRING=" + output_dir, "."], cwd=path).wait()
+    retcode = subprocess.Popen(["cmake", "-DCMAKE_C_COMPILER=" + cc_path, "-DCMAKE_CXX_COMPILER=" + cxx_path, "-DOUTPUT_DIR:STRING=" + output_dir, "."], cwd=path).wait()
     if retcode != 0 and not keep_going:
         juliet_print("error generating " + path + " - stopping")
         exit()
@@ -48,6 +48,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="build and run Juliet test cases for targeted CWEs")
     parser.add_argument("CWEs", metavar="N", type=int, nargs="*", help="a CWE number to target")
     parser.add_argument("-c", "--clean", action="store_true", help="clean all CMake and make files for the targeted CWEs")
+    parser.add_argument("-b", "--cc-path", action="store", default="cc", help="the cc compiler to use")
+    parser.add_argument("-x", "--cxx-path", action="store", default="cxx", help="the cxx compiler to use")
     parser.add_argument("-g", "--generate", action="store_true", help="use CMake to generate Makefiles for the targeted CWEs")
     parser.add_argument("-m", "--make", action="store_true", help="use make to build test cases for the targeted CWES")
     parser.add_argument("-r", "--run", action="store_true", help="run tests for the targeted CWEs")
@@ -82,7 +84,7 @@ if __name__ == "__main__":
                     clean(path)
                 if args.generate:
                     juliet_print("generating " + path)
-                    generate(path, args.output_dir, args.keep_going)
+                    generate(path, args.output_dir, args.keep_going, args.cc_path, args.cxx_path)
                 if args.make:
                     juliet_print("making " + path)
                     make(path, args.keep_going)

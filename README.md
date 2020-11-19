@@ -16,3 +16,24 @@ To run the tests on CHERI you can use [cheribuild](https://github.com/CTSRD-CHER
 `cheribuild.py juliet-c-cheri --build-and-test` will build and run the tests (assuming you have built the SDK and a CheriBSD image first).
 
 You can also manually mount the built `bin` subdirectory on a CheriBSD host and use the `juliet-run.sh` script directly to run tests.
+
+# Cross Compiling
+
+Install dockcross images:
+
+- `docker run --rm dockcross/linux-x86 > ./dockcross-linux-x86`
+- `docker run --rm dockcross/linux-x64 > ./dockcross-linux-x64`
+- `docker run --rm dockcross/linux-armv7 > ./dockcross-linux-armv7`
+
+Start a dockcross image:
+
+```sh
+$ # From juliet-test-suite-c
+$ cd ..
+$ /path/to/dockcross-linux-x64 -a "-v $(pwd)/juliet-test-suite-c/:/opt/juliet" bash
+$ python -m pip install pathlib
+$ cd /opt/juliet
+$ python juliet.py -b gcc -x g++ -c -k -o x64-output -g -m -r 121
+```
+
+The output will be put right back into the juliet-test-suite-c directory.

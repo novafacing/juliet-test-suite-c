@@ -10,8 +10,15 @@ project("juliet-c-${CWE_NAME}")
 set(CMAKE_C_FLAGS_RELWITHDEBINFO "-g")
 set(CMAKE_C_FLAGS_RELEASE "-g")
 set(CMAKE_C_FLAGS_MINSIZEREL "-g")
-add_compile_options(-O0)  # hopefully adding -O0 here should turn off test optimizations
 
+add_compile_options(
+    -O0
+    -z execstack
+    -fno-stack-protector
+)  # hopefully adding -O0 here should turn off test optimizations
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -z execstack -fno-stack-protector")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O0 -z execstack -fno-stack-protector")
 
 option(PLACE_OUTPUT_IN_TOPLEVEL_DIR "Use TOPLEVEL_DIR/bin as the output for all test binaries" ON)
 set(TOPLEVEL_DIR "${CMAKE_SOURCE_DIR}/../..")
